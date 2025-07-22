@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",  # Django REST Framework
+    "drf_yasg",  # Swagger API 文檔
     "corsheaders",  # CORS headers
     "myapps.myapps",  # 添加你的應用
 ]

@@ -7,7 +7,26 @@
 ### 先決條件
 
 -   Python 3.12+
--   [uv](https://docs.astral.sh/uv/) 套件管理工具
+
+### ✅ 已實現功能：
+
+-   🗄️ **完整資料庫模型** - 6 個相互關聯的資料表
+-   🔗 **RESTful API** - 支援完整 CRUD 操作
+-   🔍 **搜尋與篩選** - 教師搜尋、狀態篩選等
+-   📄 **自動分頁** - 每頁 20 筆資料
+-   🌐 **CORS 支援** - 允許前端跨域請求
+-   🛡️ **錯誤處理** - 詳細錯誤訊息
+-   📊 **管理介面** - Django Admin 後台管理
+-   ⚡ **自動評分** - 新增評價時自動更新課程平均評分
+-   📚 **Swagger 文檔** - 互動式 API 文檔介面
+-   🎯 **API 測試** - 內建測試工具和腳本
+
+### 🛠️ 技術棧：
+
+-   **框架**: Django 5.2.4
+-   **API**: Django REST Framework 3.16.0
+-   **文檔**: drf-yasg (Swagger/OpenAPI)
+-   **資料庫**: SQLite (開發環境)://docs.astral.sh/uv/) 套件管理工具
 
 ### 方式一：使用啟動腳本（推薦）
 
@@ -73,6 +92,8 @@ uv run python manage.py runserver
 
 -   **管理後台**: `http://127.0.0.1:8000/admin/`
 -   **API 概覽**: `http://127.0.0.1:8000/api/`
+-   **Swagger API 文檔**: `http://127.0.0.1:8000/swagger/`
+-   **ReDoc API 文檔**: `http://127.0.0.1:8000/redoc/`
 -   **瀏覽式 API**: `http://127.0.0.1:8000/api/{endpoint}/`
 
 ### 完整 CRUD 端點：

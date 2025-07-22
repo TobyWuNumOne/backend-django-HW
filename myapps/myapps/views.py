@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 from .models import User, Teacher, Student, Course, Booking, Review
 from .serializers import (
@@ -91,7 +93,17 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class TeacherViewSet(viewsets.ModelViewSet):
-    """教師 CRUD ViewSet"""
+    """
+    教師管理 API
+
+    提供教師資料的完整 CRUD 操作，包括：
+    - 獲取教師列表（支援狀態篩選）
+    - 建立新教師
+    - 獲取特定教師詳細資料
+    - 更新教師資料
+    - 刪除教師
+    - 搜尋教師（支援姓名、Email、介紹搜尋）
+    """
 
     queryset = Teacher.objects.select_related("user").all()
     serializer_class = TeacherSerializer
@@ -102,6 +114,20 @@ class TeacherViewSet(viewsets.ModelViewSet):
             return TeacherListSerializer
         return TeacherSerializer
 
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                "status",
+                openapi.IN_QUERY,
+                description="按教師狀態篩選 (active, inactive, suspended)",
+                type=openapi.TYPE_STRING,
+            )
+        ],
+        operation_description="獲取教師列表，支援按狀態篩選",
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
     def get_queryset(self):
         queryset = Teacher.objects.select_related("user").all()
         status_filter = self.request.query_params.get("status", None)
@@ -109,6 +135,19 @@ class TeacherViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(status=status_filter)
         return queryset.order_by("name")
 
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                "q",
+                openapi.IN_QUERY,
+                description="搜尋關鍵字（搜尋姓名、Email、介紹）",
+                type=openapi.TYPE_STRING,
+                required=True,
+            )
+        ],
+        operation_description="搜尋教師，支援多欄位搜尋",
+        responses={200: TeacherListSerializer(many=True)},
+    )
     @action(detail=False, methods=["get"])
     def search(self, request):
         """搜尋教師"""
